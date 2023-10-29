@@ -44,7 +44,9 @@ urlpatterns = [
     # crear materia
         path('materias/', materias.MateriasView.as_view()),
     #editar materia
-        path('usermaterias-edit/', materias.MateriasViewEdit.as_view()),
+        path('materias-edit/', materias.MateriasViewEdit.as_view(), name='materias_edit'),
+
+        #path('usermaterias-edit/', materias.MateriasViewEdit.as_view()),
         #path('usermaterias-edit/<int:pk>/', materias.MateriasViewEdit.as_view(), name='user_materias_edit'),
 
         #path('materias-edit/<int:pk>/', materias.MateriasViewEdit.as_view()),  

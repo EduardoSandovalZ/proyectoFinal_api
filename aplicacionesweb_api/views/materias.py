@@ -77,7 +77,7 @@ class MateriasViewEdit(generics.RetrieveUpdateDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         # Obtener el ID de la materia desde la consulta
         materia_id = request.GET.get('id')
-        
+
         # Verificar si el usuario actual es propietario de la materia
         materia = get_object_or_404(Materia, id=materia_id, usuario=request.user)
 
