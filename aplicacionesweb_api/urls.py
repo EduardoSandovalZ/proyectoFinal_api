@@ -18,6 +18,7 @@ from django.urls import path
 from aplicacionesweb_api.views import bootstrap
 from aplicacionesweb_api.views import users
 from aplicacionesweb_api.views import auth
+from aplicacionesweb_api.views import materias 
 
 urlpatterns = [
     #Version
@@ -31,5 +32,8 @@ urlpatterns = [
     #Login
         path('token/', auth.CustomAuthToken.as_view()),
     #Logout
-        path('logout/', auth.Logout.as_view())
+        path('logout/', auth.Logout.as_view()),
+    # urls.py
+    path('materias/', materias.MateriasView.as_view()),
+
 ]

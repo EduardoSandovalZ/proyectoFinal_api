@@ -24,3 +24,16 @@ class Profiles(models.Model):
 
     def __str__(self):
         return "Perfil del usuario "+self.usuario.first_name+" "+self.usuario.last_name
+
+class Materia(models.Model):
+    nrc = models.CharField(max_length=10)
+    nombre = models.CharField(max_length=255)
+    seccion = models.CharField(max_length=10)
+    dias = models.CharField(max_length=50)
+    hora_inicio = models.TimeField()
+    hora_final = models.TimeField()
+    salon = models.CharField(max_length=20)
+    programa_educativo = models.CharField(max_length=255)  # Puedes ajustar esto según tus necesidades
+
+    def __str__(self):
+        return self.nombre
