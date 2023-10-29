@@ -48,6 +48,7 @@ class MateriasView(generics.CreateAPIView):
         serializer = MateriaSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             # Asociar la materia al usuario actual
+            serializer.validated_data['usuario'] = request.user
             materia = serializer.save()
             return Response({"materia_created_id": materia.id}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -23,17 +23,28 @@ from aplicacionesweb_api.views import materias
 urlpatterns = [
     #Version
         path('bootstrap/version', bootstrap.VersionView.as_view()),
+        
+        
+        
     #Create User
         path('users/', users.UsersView.as_view()),
     #Edit User
         path('users-edit/', users.UsersViewEdit.as_view()),
     #User Data
         path('lista-users/', users.UsersAll.as_view()),
+        
+        
+        
     #Login
         path('token/', auth.CustomAuthToken.as_view()),
     #Logout
         path('logout/', auth.Logout.as_view()),
-    # urls.py
-    path('materias/', materias.MateriasView.as_view()),
-
+        
+    
+    # crear materia
+        path('materias/', materias.MateriasView.as_view()),
+    #editar materia
+        path('materias-edit/', materias.MateriasViewEdit.as_view()),   
+    #listar materias
+        path('lista-materias/', materias.MateriasAll.as_view()),
 ]
