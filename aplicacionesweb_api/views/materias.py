@@ -58,6 +58,22 @@ class MateriasViewEdit(generics.RetrieveUpdateDestroyAPIView):
     queryset = Materia.objects.all()
     serializer_class = MateriaSerializer
     
+    def put(self, request, *args, **kwargs):
+        # Obtener la materia y verificar si pertenece al usuario actual
+        
+        #materia = self.get_object()
+        materia_id = request.GET.get('id')
+        
+        # Verificar si el usuario actual es propietario de la materia
+        materia = get_object_or_404(Materia, id=materia_id, usuario=request.user)
+        if materia.usuario == request.user:
+            serializer = self.get_serializer(materia, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"details": "No tienes permisos para editar esta materia"}, status=status.HTTP_403_FORBIDDEN)
+
     def delete(self, request, *args, **kwargs):
         # Obtener el ID de la materia desde la consulta
         materia_id = request.GET.get('id')
