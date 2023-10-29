@@ -26,6 +26,7 @@ class Profiles(models.Model):
         return "Perfil del usuario "+self.usuario.first_name+" "+self.usuario.last_name
 
 class Materia(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, default=None)
     nrc = models.CharField(max_length=10)
     nombre = models.CharField(max_length=255)
     seccion = models.CharField(max_length=10)
@@ -37,3 +38,4 @@ class Materia(models.Model):
 
     def __str__(self):
         return self.nombre
+

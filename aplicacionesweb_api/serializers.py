@@ -25,6 +25,13 @@ class ProfilesAllSerializer(serializers.ModelSerializer):
         depth = 1
 
 class MateriaSerializer(serializers.ModelSerializer):
+    usuario = serializers.PrimaryKeyRelatedField(
+        default=serializers.CurrentUserDefault(),
+        read_only=True,
+    )
+
     class Meta:
         model = Materia
         fields = '__all__'
+
+

@@ -31,6 +31,37 @@ import string
 import random
 import json
 
-class MateriasView(generics.ListCreateAPIView):
+class MateriasAll(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        # Obtener la lista de materias asociadas al usuario actual
+        materias = Materia.objects.filter(usuario=request.user)
+        lista = MateriaSerializer(materias, many=True).data
+        return Response(lista, 200)
+    
+
+class MateriasView(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        serializer = MateriaSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            # Asociar la materia al usuario actual
+            materia = serializer.save()
+            return Response({"materia_created_id": materia.id}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class MateriasViewEdit(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
     queryset = Materia.objects.all()
     serializer_class = MateriaSerializer
+
+    def delete(self, request, *args, **kwargs):
+        # Obtener la materia y verificar si pertenece al usuario actual
+        materia = self.get_object()
+        if materia.usuario == request.user:
+            materia.delete()
+            return Response({"details": "Materia eliminada"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"details": "No tienes permisos para eliminar esta materia"}, status=status.HTTP_403_FORBIDDEN)
