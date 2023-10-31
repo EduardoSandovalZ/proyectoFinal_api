@@ -39,7 +39,22 @@ class MateriasAll(generics.ListAPIView):
         materias = Materia.objects.filter(usuario=request.user)
         lista = MateriaSerializer(materias, many=True).data
         return Response(lista, 200)
-    
+
+class MateriaDetailsView(generics.RetrieveAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    queryset = Materia.objects.all()
+    serializer_class = MateriaSerializer
+
+    def get(self, request, *args, **kwargs):
+        # Obtener el ID de la materia desde la consulta
+        materia_id = request.GET.get('id')
+
+        # Verificar si el usuario actual es propietario de la materia
+        materia = get_object_or_404(Materia, id=materia_id, usuario=request.user)
+
+        # Serializar y devolver los detalles de la materia
+        serializer = self.get_serializer(materia)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 class MateriasView(generics.CreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
@@ -86,16 +101,4 @@ class MateriasViewEdit(generics.RetrieveUpdateDestroyAPIView):
 
         return Response({"details": "Materia eliminada"}, status=status.HTTP_200_OK)
 
-    '''
-    def delete(self, request, *args, **kwargs):
-        # Obtener la materia y verificar si pertenece al usuario actual
-        materia = self.get_object()
-        if materia.usuario == request.user:
-            materia.delete()
-            return Response({"details": "Materia eliminada"}, status=status.HTTP_200_OK)
-        else:
-            return Response({"details": "No tienes permisos para eliminar esta materia"}, status=status.HTTP_403_FORBIDDEN)
-    
-    
-    '''
     
